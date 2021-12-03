@@ -55,6 +55,9 @@ class FootballData {
         this.token = token;
         this.timeout = timeout;
         this.baseURL = 'http://api.football-data.org/v2/';
+        this.headers = {
+            'X-Auth-Token': token
+        };
 
         /*
         this.instance = axios.create({
@@ -73,35 +76,45 @@ class FootballData {
         area,
         plan
     } = {}) {
-
+        const headers = this.headers;
         return fetchTimeout(`${this.baseURL}/competitions?${requestParams({
             areas: area,
             plan
-        })}`, {}, this.timeout);
+        })}`, {
+            headers
+        }, this.timeout);
     }
 
     competition(competitionId) {
-        return fetchTimeout(`${this.baseURL}/competitions/${competitionId}`)
+        const headers = this.headers;
+        return fetchTimeout(`${this.baseURL}/competitions/${competitionId}`, {
+            headers
+        }, this.timeout);
     }
 
     teams(competitionId, {
         season,
         stage
     } = {}) {
+        const headers = this.headers;
 
         return fetchTimeout(`${this.baseURL}/competitions/${competitionId}/teams?${requestParams({
             season,
             stage
-        })}`, {}, this.timeout);
+        })}`, {
+            headers
+        }, this.timeout);
     }
 
     standings(competitionId, {
         standingType
     } = {}) {
-
+        const headers = this.headers;
         return fetchTimeout(`${this.baseURL}/competitions/${competitionId}/standings?${requestParams({
             standingType
-        })}`, {}, this.timeout);
+        })}`, {
+            headers
+        }, this.timeout);
     }
 
     competitionMatches(competitionId, {
@@ -113,7 +126,7 @@ class FootballData {
         group,
         season
     } = {}) {
-
+        const headers = this.headers;
         return fetchTimeout(`${this.baseURL}/competitions/${competitionId}/matches?${requestParams({
             dateFrom,
             dateTo,
@@ -122,7 +135,9 @@ class FootballData {
             matchday,
             group,
             season
-        })}`, {}, this.timeout);
+        })}`, {
+            headers
+        }, this.timeout);
     }
 
     matches({
@@ -131,17 +146,22 @@ class FootballData {
         dateTo,
         status
     } = {}) {
-
+        const headers = this.headers;
         return fetchTimeout(`${this.baseURL}/matches?${requestParams({
             competitions,
             dateFrom,
             dateTo,
             status
-        })}`, {}, this.timeout);
+        })}`, {
+            headers
+        }, this.timeout);
     }
 
     match(id) {
-        return fetchTimeout(`${this.baseURL}/matches/${id}`, {}, this.timeout);
+        const headers = this.headers;
+        return fetchTimeout(`${this.baseURL}/matches/${id}`, {
+            headers
+        }, this.timeout);
     }
 
     teamMatches(id, {
@@ -151,26 +171,37 @@ class FootballData {
         venue,
         limit
     } = {}) {
-
+        const headers = this.headers;
         return fetchTimeout(`${this.baseURL}/teams/${id}/matches?${requestParams({
             dateFrom,
             dateTo,
             status,
             venue,
             limit
-        })}`, {}, this.timeout);
+        })}`, {
+            headers
+        }, this.timeout);
     }
 
     team(id) {
-        return fetchTimeout(`${this.baseURL}/teams/${id}`, {}, this.timeout);
+        const headers = this.headers;
+        return fetchTimeout(`${this.baseURL}/teams/${id}`, {
+            headers
+        }, this.timeout);
     }
 
     areas(id) {
-        return fetchTimeout(`${this.baseURL}/areas/${id}`, {}, this.timeout);
+        const headers = this.headers;
+        return fetchTimeout(`${this.baseURL}/areas/${id}`, {
+            headers
+        }, this.timeout);
     }
 
     player(id) {
-        return fetchTimeout(`${this.baseURL}/player/${id}`, {}, this.timeout);
+        const headers = this.headers;
+        return fetchTimeout(`${this.baseURL}/player/${id}`, {
+            headers
+        }, this.timeout);
     }
 
     playerMatches(id, {
@@ -180,25 +211,29 @@ class FootballData {
         status,
         limit
     } = {}) {
-
+        const headers = this.headers;
         return fetchTimeout(`${this.baseURL}/players/${id}/matches?${requestParams({
             competitions,
             dateFrom,
             dateTo,
             status,
             limit
-        })}`, {}, this.timeout);
+        })}`, {
+            headers
+        }, this.timeout);
     }
 
     scorers(competitionId, {
         limit,
         season
     } = {}) {
-
+        const headers = this.headers;
         return fetchTimeout(`${this.baseURL}/competitions/${competitionId}/scorers?${requestParams({
             limit,
             season
-        })}`, {}, this.timeout);
+        })}`, {
+            headers
+        }, this.timeout);
     }
 
 
