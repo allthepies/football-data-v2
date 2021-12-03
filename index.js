@@ -38,13 +38,31 @@ function requestParams(params) {
     return searchParams.toString();
 }
 
-
+/*
 function fetchTimeout(url, options = {}, timeout = 5000) {
     return Promise.race([
         fetch(url, options),
         new Promise((_, reject) => setTimeout(() => reject("timeout"), timeout)),
     ])
 }
+
+*/
+
+function fetchTimeout(url, options = {}, timeout = 5000) {
+    let timer = null;
+
+    return Promise.race([
+        new Promise((resolve, reject) => {
+            timer = setTimeout(reject, timeout, "timeout");
+            return timer;
+        }),
+        fetch(url, options).then((value) => {
+            clearTimeout(timer);
+            return value;
+        })
+    ]);
+}
+
 
 
 class FootballData {
