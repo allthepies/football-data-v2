@@ -51,7 +51,7 @@ class FootballData {
 
 
 
-    constructor(token, timeout = 1000) {
+    constructor(token, timeout = 5000) {
         this.token = token;
         this.timeout = timeout;
         /*
@@ -75,7 +75,7 @@ class FootballData {
         return fetchTimeout(`/competitions?${requestParams({
             areas: area,
             plan
-        })}`)
+        })}`, {}, this.timeout);
     }
 
     competition(competitionId) {
@@ -90,7 +90,7 @@ class FootballData {
         return fetchTimeout(`/competitions/${competitionId}/teams?${requestParams({
             season,
             stage
-        })}`)
+        })}`, {}, this.timeout);
     }
 
     standings(competitionId, {
@@ -99,7 +99,7 @@ class FootballData {
 
         return fetchTimeout(`/competitions/${competitionId}/standings?${requestParams({
             standingType
-        })}`)
+        })}`, {}, this.timeout);
     }
 
     competitionMatches(competitionId, {
@@ -120,7 +120,7 @@ class FootballData {
             matchday,
             group,
             season
-        })}`)
+        })}`, {}, this.timeout);
     }
 
     matches({
@@ -135,11 +135,11 @@ class FootballData {
             dateFrom,
             dateTo,
             status
-        })}`)
+        })}`, {}, this.timeout);
     }
 
     match(id) {
-        return this.instance.get(`/matches/${id}`)
+        return fetchTimeout(`/matches/${id}`, {}, this.timeout);
     }
 
     teamMatches(id, {
@@ -156,19 +156,19 @@ class FootballData {
             status,
             venue,
             limit
-        })}`)
+        })}`, {}, this.timeout);
     }
 
     team(id) {
-        return fetchTimeout(`/teams/${id}`)
+        return fetchTimeout(`/teams/${id}`, {}, this.timeout);
     }
 
     areas(id) {
-        return fetchTimeout(`/areas/${id}`)
+        return fetchTimeout(`/areas/${id}`, {}, this.timeout);
     }
 
     player(id) {
-        return fetchTimeout(`/player/${id}`)
+        return fetchTimeout(`/player/${id}`, {}, this.timeout);
     }
 
     playerMatches(id, {
@@ -185,7 +185,7 @@ class FootballData {
             dateTo,
             status,
             limit
-        })}`)
+        })}`, {}, this.timeout);
     }
 
     scorers(competitionId, {
@@ -196,7 +196,7 @@ class FootballData {
         return fetchTimeout(`/competitions/${competitionId}/scorers?${requestParams({
             limit,
             season
-        })}`)
+        })}`, {}, this.timeout);
     }
 
 
