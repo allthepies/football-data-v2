@@ -1,4 +1,6 @@
-const axios = require('axios');
+//const axios = require('axios');
+const fetch = require('node-fetch');
+
 const Agent = require('agentkeepalive');
 
 const httpKeepAliveAgent = new Agent({
@@ -37,9 +39,22 @@ function requestParams(params) {
 }
 
 
+function fetchTimeout(url, options = {}, timeout = 5000) {
+    return Promise.race([
+        fetch(url, options),
+        new Promise((_, reject) => setTimeout(() => reject("timeout"), timeout)),
+    ])
+}
+
+
 class FootballData {
 
+
+
     constructor(token, timeout = 1000) {
+        this.token = token;
+        this.timeout = timeout;
+        /*
         this.instance = axios.create({
             baseURL: 'http://api.football-data.org/v2/',
             timeout: timeout,
@@ -49,6 +64,7 @@ class FootballData {
             httpAgent: httpKeepAliveAgent,
             httpsAgent: httpsKeepAliveAgent
         });
+        */
     }
 
     competitions({
@@ -56,14 +72,14 @@ class FootballData {
         plan
     } = {}) {
 
-        return this.instance.get(`/competitions?${requestParams({
+        return fetchTimeout(`/competitions?${requestParams({
             areas: area,
             plan
         })}`)
     }
 
     competition(competitionId) {
-        return this.instance.get(`/competitions/${competitionId}`)
+        return fetchTimeout(`/competitions/${competitionId}`)
     }
 
     teams(competitionId, {
@@ -71,7 +87,7 @@ class FootballData {
         stage
     } = {}) {
 
-        return this.instance.get(`/competitions/${competitionId}/teams?${requestParams({
+        return fetchTimeout(`/competitions/${competitionId}/teams?${requestParams({
             season,
             stage
         })}`)
@@ -81,7 +97,7 @@ class FootballData {
         standingType
     } = {}) {
 
-        return this.instance.get(`/competitions/${competitionId}/standings?${requestParams({
+        return fetchTimeout(`/competitions/${competitionId}/standings?${requestParams({
             standingType
         })}`)
     }
@@ -96,7 +112,7 @@ class FootballData {
         season
     } = {}) {
 
-        return this.instance.get(`/competitions/${competitionId}/matches?${requestParams({
+        return fetchTimeout(`/competitions/${competitionId}/matches?${requestParams({
             dateFrom,
             dateTo,
             stage,
@@ -114,7 +130,7 @@ class FootballData {
         status
     } = {}) {
 
-        return this.instance.get(`/matches?${requestParams({
+        return fetchTimeout(`/matches?${requestParams({
             competitions,
             dateFrom,
             dateTo,
@@ -134,7 +150,7 @@ class FootballData {
         limit
     } = {}) {
 
-        return this.instance.get(`/teams/${id}/matches?${requestParams({
+        return fetchTimeout(`/teams/${id}/matches?${requestParams({
             dateFrom,
             dateTo,
             status,
@@ -144,15 +160,15 @@ class FootballData {
     }
 
     team(id) {
-        return this.instance.get(`/teams/${id}`)
+        return fetchTimeout(`/teams/${id}`)
     }
 
     areas(id) {
-        return this.instance.get(`/areas/${id}`)
+        return fetchTimeout(`/areas/${id}`)
     }
 
     player(id) {
-        return this.instance.get(`/player/${id}`)
+        return fetchTimeout(`/player/${id}`)
     }
 
     playerMatches(id, {
@@ -163,7 +179,7 @@ class FootballData {
         limit
     } = {}) {
 
-        return this.instance.get(`/players/${id}/matches?${requestParams({
+        return fetchTimeout(`/players/${id}/matches?${requestParams({
             competitions,
             dateFrom,
             dateTo,
@@ -177,7 +193,7 @@ class FootballData {
         season
     } = {}) {
 
-        return this.instance.get(`/competitions/${competitionId}/scorers?${requestParams({
+        return fetchTimeout(`/competitions/${competitionId}/scorers?${requestParams({
             limit,
             season
         })}`)
